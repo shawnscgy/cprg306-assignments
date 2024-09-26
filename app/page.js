@@ -14,6 +14,11 @@ export default function Page() {
           ****************CLICK HERE TO WEEK-3*****************
         </Link>
       </div>
+      <div>
+        <Link href="/week-4">
+          ****************CLICK HERE TO WEEK-4*****************
+        </Link>
+      </div>
     </main>
   );
 }
