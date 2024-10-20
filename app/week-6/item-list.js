@@ -4,29 +4,69 @@ import { useState } from "react";
 import items from "./items";
 export default function ItemList() {
   const [sortBy, setSortBy] = useState("name");
-
-  items.sort((a, b) => {
+  const compare = (a, b) => {
     if (sortBy === "name") {
       return a.name.localeCompare(b.name);
     }
     if (sortBy === "category") {
       return a.category.localeCompare(b.category);
     }
-    return a.category.localeCompare(b.category) || a.name.localeCompare(b.name);
-  });
+  };
+  // sort here
+  items.sort(compare);
+
+  // Horrible stuff here
+  const groupedCategory = items.reduce((acc, item) => {
+    if (!acc[item.category]) {
+      acc[item.category] = [];
+    }
+    acc[item.category].push(item);
+    return acc;
+  }, {});
+
   return (
     <div>
-      <button onClick={() => setSortBy("name")}>Name</button>
-      <button onClick={() => setSortBy("category")}>Category</button>
-      <button>Gouped Categorty</button>
-      {items.map((item) => (
-        <Item
-          key={item.id}
-          name={item.name}
-          quantity={item.quantity}
-          category={item.category}
-        />
-      ))}
+      <label>Sort by: </label>
+      <button
+        onClick={() => setSortBy("name")}
+        className="bg-orange-700 p-1 m-2 w-28"
+      >
+        Name
+      </button>
+      <button
+        onClick={() => setSortBy("category")}
+        className="bg-orange-700 p-1 m-2 w-28"
+      >
+        Category
+      </button>
+      <button
+        onClick={() => groupedCategory}
+        className="bg-orange-700 p-1 m-2 w-28"
+      >
+        Gouped Categorty
+      </button>
+
+      {/* {Object.entries(groupedCategory).map((array) =>
+        (array.map((item) => (
+          <Item
+            key={item.id}
+            name={item.name}
+            quantity={item.quantity}
+            category={item.category}
+            className="bg-orange-700 p-1 m-2 w-28"
+          />
+        )))
+      )} */}
+      <ul>
+        {items.map((item) => (
+          <Item
+            key={item.id}
+            name={item.name}
+            quantity={item.quantity}
+            category={item.category}
+          />
+        ))}
+      </ul>
     </div>
   );
 }
