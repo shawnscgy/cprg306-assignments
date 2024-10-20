@@ -4,6 +4,9 @@ import { useState } from "react";
 import items from "./items";
 export default function ItemList() {
   const [sortBy, setSortBy] = useState("name");
+  const [horribleState, setHorribleState] = useState(false);
+
+  // parameter here for sort()
   const compare = (a, b) => {
     if (sortBy === "name") {
       return a.name.localeCompare(b.name);
@@ -12,10 +15,19 @@ export default function ItemList() {
       return a.category.localeCompare(b.category);
     }
   };
-  // sort here
+  // handle sortBy to determine compare method
+  const handleSortByName = () => {
+    setSortBy("name");
+    setHorribleState(false);
+  };
+  const handleSortBycategory = () => {
+    setSortBy("category");
+    setHorribleState(false);
+  };
+  // based on above, you have got the compare method sort here
   items.sort(compare);
 
-  // Horrible stuff here
+  // Horrible object here
   const groupedCategory = items.reduce((acc, item) => {
     if (!acc[item.category]) {
       acc[item.category] = [];
@@ -23,50 +35,77 @@ export default function ItemList() {
     acc[item.category].push(item);
     return acc;
   }, {});
+  // Horrible state turn on here
+  const handleGroupedCategory = () => {
+    setHorribleState(true);
+    setSortBy(""); // change color of name and category button
+  };
 
   return (
     <div>
       <label>Sort by: </label>
       <button
-        onClick={() => setSortBy("name")}
-        className="bg-orange-700 p-1 m-2 w-28"
+        onClick={() => handleSortByName()}
+        className={`${
+          sortBy === "name" ? "bg-orange-500" : "bg-orange-700"
+        } p-1 m-2 w-28`}
       >
         Name
       </button>
       <button
-        onClick={() => setSortBy("category")}
-        className="bg-orange-700 p-1 m-2 w-28"
+        onClick={() => handleSortBycategory()}
+        className={`${
+          sortBy === "category" ? "bg-orange-500" : "bg-orange-700"
+        } p-1 m-2 w-28`}
       >
         Category
       </button>
       <button
-        onClick={() => groupedCategory}
-        className="bg-orange-700 p-1 m-2 w-28"
+        onClick={() => handleGroupedCategory()}
+        className={`${
+          horribleState ? "bg-orange-500" : "bg-orange-700"
+        } p-1 m-2 w-28`}
       >
         Gouped Categorty
       </button>
-
-      {/* {Object.entries(groupedCategory).map((array) =>
-        (array.map((item) => (
-          <Item
-            key={item.id}
-            name={item.name}
-            quantity={item.quantity}
-            category={item.category}
-            className="bg-orange-700 p-1 m-2 w-28"
-          />
-        )))
-      )} */}
-      <ul>
-        {items.map((item) => (
-          <Item
-            key={item.id}
-            name={item.name}
-            quantity={item.quantity}
-            category={item.category}
-          />
-        ))}
-      </ul>
+      {/* Horrible state here */}
+      {horribleState &&
+        Object.entries(groupedCategory)
+          .sort((array1, array2) => {
+            array1[0] - array2[0];
+          })
+          .map(([key, array]) => (
+            <div key={key}>
+              <h3 className="text-xl capitalize">{key}</h3>
+              <ul>
+                {array
+                  .sort((a, b) => {
+                    a - b;
+                  })
+                  .map((item) => (
+                    <Item
+                      key={item.id}
+                      name={item.name}
+                      quantity={item.quantity}
+                      category={item.category}
+                    />
+                  ))}
+              </ul>
+            </div>
+          ))}
+      {/* normal state here */}
+      {!horribleState && (
+        <ul>
+          {items.map((item) => (
+            <Item
+              key={item.id}
+              name={item.name}
+              quantity={item.quantity}
+              category={item.category}
+            />
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
