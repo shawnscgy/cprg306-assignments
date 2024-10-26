@@ -1,4 +1,4 @@
-import ItemList from "./item-list";
+import ItemList from "../week-7/item-list";
 export default function Page() {
   return (
     <main className="bg-slate-950">

@@ -1,8 +1,7 @@
 "use client";
-import Item from "../week-6/item";
+import Item from "./item";
 import { useState } from "react";
-import items from "./items";
-export default function ItemList() {
+export default function ItemList({ items }) {
   const [sortBy, setSortBy] = useState("name");
   const [horribleState, setHorribleState] = useState(false);
 
