@@ -121,7 +121,7 @@ export default function ItemList({ items }) {
       {!horribleState && (
         <ul>
           {itemsState.map((item) => (
-            <Item
+            <li
               key={item.id}
               name={item.name}
               quantity={item.quantity}
