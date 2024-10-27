@@ -71,17 +71,13 @@ export default function ItemList() {
       {/* Horrible state here */}
       {horribleState &&
         Object.entries(groupedCategory)
-          .sort((array1, array2) => {
-            array1[0] - array2[0];
-          })
+          .sort((array1, array2) => array1[0] - array2[0])
           .map(([key, array]) => (
             <div key={key}>
               <h3 className="text-xl capitalize">{key}</h3>
               <ul>
                 {array
-                  .sort((a, b) => {
-                    a - b;
-                  })
+                  .sort((a, b) => a - b)
                   .map((item) => (
                     <Item
                       key={item.id}
