@@ -5,16 +5,29 @@ export default function NewItem() {
   const [quantity, setQuantity] = useState(1);
   const [name, setName] = useState("");
   const [category, setCategory] = useState("produce");
-
+  function generateRandomString() {
+    const length = 16;
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+    return result;
+  }
   const increment = () => setQuantity(quantity + 1);
   const decrement = () => setQuantity(quantity - 1);
   const handleSubmit = (e) => {
-    const item = { name, quantity, category: category };
+    const item = { id: generateRandomString(), name, quantity, category };
     if (name === "") {
       return;
     }
     alert(
-      "name: " +
+      "id: " +
+        item.id +
+        " name: " +
         item.name +
         " quantity: " +
         item.quantity +
@@ -58,7 +71,7 @@ export default function NewItem() {
         </div>
         <select
           className="border-2 border-gray-300 p-2 rounded-lg font-sans ml-1"
-          option={(e) => {
+          onChange={(e) => {
             setCategory(e.target.value);
             console.log(e.target.value);
           }}

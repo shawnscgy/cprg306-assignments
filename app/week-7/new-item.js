@@ -5,16 +5,33 @@ export default function NewItem({ onAddItem }) {
   const [quantity, setQuantity] = useState(1);
   const [name, setName] = useState("");
   const [category, setCategory] = useState("produce");
-
+  function generateRandomString() {
+    const length = 16;
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+    return result;
+  }
   const increment = () => setQuantity(quantity + 1);
   const decrement = () => setQuantity(quantity - 1);
-  const handleSubmit = () => {
-    const id = Math.floor();
-    const item = { id, name, quantity, category: category };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const item = {
+      id: generateRandomString(),
+      name,
+      quantity,
+      category,
+    };
     if (name === "") {
       return;
     }
     onAddItem(item);
+    console.log(item);
   };
   return (
     <form className=" bg-slate-900 p-2 m-4 max-w-sm w-full text-black">
@@ -51,15 +68,14 @@ export default function NewItem({ onAddItem }) {
         </div>
         <select
           className="border-2 border-gray-300 p-2 rounded-lg font-sans ml-1"
-          option={(e) => {
+          onChange={(e) => {
             setCategory(e.target.value);
             console.log(e.target.value);
           }}
+          defaultValue="produce"
         >
           <option disabled>Category</option>
-          <option value="produce" selected>
-            Produce
-          </option>
+          <option value="produce">Produce</option>
           <option value="dairy">Dairy</option>
           <option value="bakery">Bakery</option>
           <option value="meat">Meat</option>

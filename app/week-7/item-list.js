@@ -1,33 +1,55 @@
 "use client";
 import Item from "./item";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 export default function ItemList({ items }) {
-  const [sortBy, setSortBy] = useState("name");
+  const [sortBy, setSortBy] = useState("");
   const [horribleState, setHorribleState] = useState(false);
+  const [itemsState, setItemsState] = useState([...items]);
 
-  // parameter here for sort()
-  const compare = (a, b) => {
+  useEffect(() => {
+    setItemsState([...items]);
     if (sortBy === "name") {
-      return a.name.localeCompare(b.name);
+      const newList = [...items];
+      newList.sort((a, b) => a.name.localeCompare(b.name));
+      setItemsState(newList);
+      setHorribleState(false);
     }
     if (sortBy === "category") {
-      return a.category.localeCompare(b.category);
+      const newList = [...items];
+      newList.sort((a, b) => a.category.localeCompare(b.category));
+      setItemsState(newList);
+      setHorribleState(false);
     }
-  };
+  }, [items]);
+
   // handle sortBy to determine compare method
   const handleSortByName = () => {
+    if (sortBy === "name") {
+      setSortBy("");
+      setItemsState([...items]);
+      return;
+    }
     setSortBy("name");
+    const newList = [...items];
+    newList.sort((a, b) => a.name.localeCompare(b.name));
+    setItemsState(newList);
     setHorribleState(false);
   };
-  const handleSortBycategory = () => {
+  const handleSortByCategory = () => {
+    if (sortBy === "category") {
+      setSortBy("");
+      setItemsState([...items]);
+      return;
+    }
     setSortBy("category");
+    const newList = [...items];
+    newList.sort((a, b) => a.category.localeCompare(b.category));
+    setItemsState(newList);
     setHorribleState(false);
   };
-  // based on above, you have got the compare method sort here
-  items.sort(compare);
 
   // Horrible object here
-  const groupedCategory = items.reduce((acc, item) => {
+  const groupedCategory = itemsState.reduce((acc, item) => {
     if (!acc[item.category]) {
       acc[item.category] = [];
     }
@@ -36,6 +58,11 @@ export default function ItemList({ items }) {
   }, {});
   // Horrible state turn on here
   const handleGroupedCategory = () => {
+    if (horribleState) {
+      setHorribleState(false);
+      setItemsState([...items]);
+      return;
+    }
     setHorribleState(true);
     setSortBy(""); // change color of name and category button
   };
@@ -52,7 +79,7 @@ export default function ItemList({ items }) {
         Name
       </button>
       <button
-        onClick={() => handleSortBycategory()}
+        onClick={() => handleSortByCategory()}
         className={`${
           sortBy === "category" ? "bg-orange-500" : "bg-orange-700"
         } p-1 m-2 w-28`}
@@ -70,16 +97,14 @@ export default function ItemList({ items }) {
       {/* Horrible state here */}
       {horribleState &&
         Object.entries(groupedCategory)
-          .sort((array1, array2) => {
-            array1[0] - array2[0];
-          })
+          .sort((array1, array2) => array1[0].localeCompare(array2[0]))
           .map(([key, array]) => (
             <div key={key}>
               <h3 className="text-xl capitalize">{key}</h3>
               <ul>
                 {array
                   .sort((a, b) => {
-                    a - b;
+                    return a.name.localeCompare(b.name);
                   })
                   .map((item) => (
                     <Item
@@ -95,7 +120,7 @@ export default function ItemList({ items }) {
       {/* normal state here */}
       {!horribleState && (
         <ul>
-          {items.map((item) => (
+          {itemsState.map((item) => (
             <Item
               key={item.id}
               name={item.name}
