@@ -6,24 +6,25 @@ export default function ItemList({ items }) {
   const [horribleState, setHorribleState] = useState(false);
   const [itemsState, setItemsState] = useState([...items]);
 
+  // add useEffect, cause if not, the added items will not show up
   useEffect(() => {
-    setItemsState([...items]);
+    const newList = [...items];
+    // hold the state of the items sorted by name
     if (sortBy === "name") {
-      const newList = [...items];
       newList.sort((a, b) => a.name.localeCompare(b.name));
-      setItemsState(newList);
       setHorribleState(false);
     }
+    // hold the state of the items sorted by name
     if (sortBy === "category") {
-      const newList = [...items];
       newList.sort((a, b) => a.category.localeCompare(b.category));
-      setItemsState(newList);
       setHorribleState(false);
     }
+    setItemsState(newList);
   }, [items]);
 
   // handle sortBy to determine compare method
   const handleSortByName = () => {
+    // canceled and reset to initial state
     if (sortBy === "name") {
       setSortBy("");
       setItemsState([...items]);
@@ -36,6 +37,7 @@ export default function ItemList({ items }) {
     setHorribleState(false);
   };
   const handleSortByCategory = () => {
+    // canceled and reset to initial state
     if (sortBy === "category") {
       setSortBy("");
       setItemsState([...items]);
@@ -58,6 +60,7 @@ export default function ItemList({ items }) {
   }, {});
   // Horrible state turn on here
   const handleGroupedCategory = () => {
+    // canceled and reset to initial state
     if (horribleState) {
       setHorribleState(false);
       setItemsState([...items]);
