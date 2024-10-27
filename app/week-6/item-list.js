@@ -20,7 +20,7 @@ export default function ItemList() {
     setSortBy("name");
     setHorribleState(false);
   };
-  const handleSortBycategory = () => {
+  const handleSortByCategory = () => {
     setSortBy("category");
     setHorribleState(false);
   };
@@ -53,7 +53,7 @@ export default function ItemList() {
         Name
       </button>
       <button
-        onClick={() => handleSortBycategory()}
+        onClick={() => handleSortByCategory()}
         className={`${
           sortBy === "category" ? "bg-orange-500" : "bg-orange-700"
         } p-1 m-2 w-28`}
@@ -71,13 +71,13 @@ export default function ItemList() {
       {/* Horrible state here */}
       {horribleState &&
         Object.entries(groupedCategory)
-          .sort((array1, array2) => array1[0] - array2[0])
+          .sort((array1, array2) => array1[0].localeCompare(array2[0]))
           .map(([key, array]) => (
             <div key={key}>
               <h3 className="text-xl capitalize">{key}</h3>
               <ul>
                 {array
-                  .sort((a, b) => a - b)
+                  .sort((a, b) => a.name.localeCompare(b.name))
                   .map((item) => (
                     <Item
                       key={item.id}

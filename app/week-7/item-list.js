@@ -92,7 +92,7 @@ export default function ItemList({ items }) {
           horribleState ? "bg-orange-500" : "bg-orange-700"
         } p-1 m-2 w-28`}
       >
-        Gouped Categorty
+        Grouped Category
       </button>
       {/* Horrible state here */}
       {horribleState &&
