@@ -1,36 +1,36 @@
 "use client";
-
+import NewItem from "./new-item";
+import itemsData from "./items";
+import ItemList from "./item-list";
+import MealIdeas from "./meal-ideas";
 import { useState } from "react";
-export default function NewItem() {
-  const [quantity, setQuantity] = useState(1);
-
-  const increment = () => {
-    setQuantity((quantity) => quantity + 1);
-    setQuantity((quantity) => quantity + 1);
-    setQuantity((quantity) => quantity + 1);
+export default function Page() {
+  const [items, setItems] = useState(itemsData);
+  const [selectedItemName, setSelectedItemName] = useState("");
+  const handleAddItem = (item) => {
+    setItems([...items, item]);
   };
-  const decrement = () => setQuantity(quantity - 1);
+  const handleItemSelect = (name) => {
+    let newName = name.replace(
+      /([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g,
+      ""
+    );
+    newName = newName.split(",")[0];
+    newName = newName.trim();
+    setSelectedItemName(newName);
+  };
   return (
-    <div className="flex justify-between w-36 h-10 p-1 m-4 bg-white">
-      <div className="p-1 text-black">{quantity}</div>
-      <div>
-        <button
-          className="bg-blue-500 text-white font-semibold m-1 w-8 h-6 rounded-lg
-        shadow-md hover:bg-blue-700  focus:outline-none focus:ring-2 disabled:bg-gray-400 focus:ring-blue-500 focus:ring-opacity-75"
-          disabled={quantity === 1}
-          onClick={decrement}
-        >
-          -
-        </button>
-        <button
-          className="bg-blue-500 text-white font-semibold m-1 w-8 h-6 rounded-lg
-        shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 disabled:bg-gray-400 focus:ring-blue-500 focus:ring-opacity-75"
-          disabled={quantity === 20}
-          onClick={increment}
-        >
-          +
-        </button>
+    <main className="bg-slate-950 m-2 p-2">
+      <h1 className="text-3xl font-bold mb-4 text-white">Shopping List</h1>
+      <div className="flex">
+        <div className="max-w-md m-2">
+          <NewItem onAddItem={handleAddItem} />
+          <ItemList items={items} onItemSelect={handleItemSelect} />
+        </div>
+        <div className="max-w-sm m-2">
+          <MealIdeas ingredient={selectedItemName} />
+        </div>
       </div>
-    </div>
+    </main>
   );
 }

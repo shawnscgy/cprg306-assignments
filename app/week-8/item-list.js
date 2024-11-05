@@ -1,34 +1,57 @@
 "use client";
 import Item from "./item";
-import { useState } from "react";
-import items from "./items";
-export default function ItemList() {
-  const [sortBy, setSortBy] = useState("name");
+import { useEffect, useState } from "react";
+export default function ItemList({ items, onItemSelect }) {
+  const [sortBy, setSortBy] = useState("");
   const [horribleState, setHorribleState] = useState(false);
+  const [itemsState, setItemsState] = useState([...items]);
 
-  // parameter here for sort()
-  const compare = (a, b) => {
+  // add useEffect, cause if not, the added items will not show up
+  useEffect(() => {
+    const newList = [...items];
+    // hold the state of the items sorted by name
     if (sortBy === "name") {
-      return a.name.localeCompare(b.name);
+      newList.sort((a, b) => a.name.localeCompare(b.name));
+      setHorribleState(false);
     }
+    // hold the state of the items sorted by category
     if (sortBy === "category") {
-      return a.category.localeCompare(b.category);
+      newList.sort((a, b) => a.category.localeCompare(b.category));
+      setHorribleState(false);
     }
-  };
+    setItemsState(newList);
+  }, [items]);
+
   // handle sortBy to determine compare method
   const handleSortByName = () => {
+    // canceled and reset to initial state
+    if (sortBy === "name") {
+      setSortBy("");
+      setItemsState([...items]);
+      return;
+    }
     setSortBy("name");
+    const newList = [...items];
+    newList.sort((a, b) => a.name.localeCompare(b.name));
+    setItemsState(newList);
     setHorribleState(false);
   };
   const handleSortByCategory = () => {
+    // canceled and reset to initial state
+    if (sortBy === "category") {
+      setSortBy("");
+      setItemsState([...items]);
+      return;
+    }
     setSortBy("category");
+    const newList = [...items];
+    newList.sort((a, b) => a.category.localeCompare(b.category));
+    setItemsState(newList);
     setHorribleState(false);
   };
-  // based on above, you have got the compare method sort here
-  items.sort(compare);
 
   // Horrible object here
-  const groupedCategory = items.reduce((acc, item) => {
+  const groupedCategory = itemsState.reduce((acc, item) => {
     if (!acc[item.category]) {
       acc[item.category] = [];
     }
@@ -37,6 +60,12 @@ export default function ItemList() {
   }, {});
   // Horrible state turn on here
   const handleGroupedCategory = () => {
+    // canceled and reset to initial state
+    if (horribleState) {
+      setHorribleState(false);
+      setItemsState([...items]);
+      return;
+    }
     setHorribleState(true);
     setSortBy(""); // change color of name and category button
   };
@@ -66,7 +95,7 @@ export default function ItemList() {
           horribleState ? "bg-orange-500" : "bg-orange-700"
         } p-1 m-2 w-28`}
       >
-        Gouped Categorty
+        Grouped Category
       </button>
       {/* Horrible state here */}
       {horribleState &&
@@ -77,13 +106,16 @@ export default function ItemList() {
               <h3 className="text-xl capitalize">{key}</h3>
               <ul>
                 {array
-                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .sort((a, b) => {
+                    return a.name.localeCompare(b.name);
+                  })
                   .map((item) => (
                     <Item
                       key={item.id}
                       name={item.name}
                       quantity={item.quantity}
                       category={item.category}
+                      onSelect={onItemSelect}
                     />
                   ))}
               </ul>
@@ -92,12 +124,13 @@ export default function ItemList() {
       {/* normal state here */}
       {!horribleState && (
         <ul>
-          {items.map((item) => (
+          {itemsState.map((item) => (
             <Item
               key={item.id}
               name={item.name}
               quantity={item.quantity}
               category={item.category}
+              onSelect={onItemSelect}
             />
           ))}
         </ul>

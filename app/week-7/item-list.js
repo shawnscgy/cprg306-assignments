@@ -14,7 +14,7 @@ export default function ItemList({ items }) {
       newList.sort((a, b) => a.name.localeCompare(b.name));
       setHorribleState(false);
     }
-    // hold the state of the items sorted by name
+    // hold the state of the items sorted by category
     if (sortBy === "category") {
       newList.sort((a, b) => a.category.localeCompare(b.category));
       setHorribleState(false);
