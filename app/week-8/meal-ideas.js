@@ -20,6 +20,7 @@ export default function MealIdeas({ ingredient }) {
   }, [ingredient]);
   // optional part
   const fetchMealDetails = async (id) => {
+    if (id === "") return;
     const response = await fetch(
       `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
     );
