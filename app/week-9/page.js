@@ -1,26 +1,47 @@
 "use client";
 
-import { useState, useEffect } from "react";
-export default function Page() {
-  const [dogUrl, setDogUrl] = useState(null);
+import { useUserAuth } from "./_utils/auth-context";
+import { useState } from "react";
 
-  const getDog = async () => {
-    const response = await fetch("https://dog.ceo/api/breeds/image/random");
-    const data = await response.json();
-    const url = data.message;
-    setDogUrl(url);
+const MyComponent = () => {
+  const { user, gitHubSignIn, firebaseSignOut } = useUserAuth();
+  const [error, setError] = useState(null);
+
+  // Event handler for signing in
+  const handleSignIn = async () => {
+    try {
+      await gitHubSignIn();
+    } catch (err) {
+      setError("Failed to sign in");
+      console.error(err);
+    }
   };
 
-  useEffect(() => {
-    getDog();
-  }, []);
+  // Event handler for signing out
+  const handleSignOut = async () => {
+    try {
+      await firebaseSignOut();
+    } catch (err) {
+      setError("Failed to sign out");
+      console.error(err);
+    }
+  };
+
   return (
     <div>
-      <text>week8</text>
-
-      <p>
-        <img src={dogUrl} alt="dog" />
-      </p>
+      {user ? (
+        <div>
+          <p>
+            Welcome, {user.displayName} ({user.email})
+          </p>
+          <button onClick={handleSignOut}>Sign Out</button>
+        </div>
+      ) : (
+        <button onClick={handleSignIn}>Sign In with GitHub</button>
+      )}
+      {error && <p>{error}</p>}
     </div>
   );
-}
+};
+
+export default MyComponent;
