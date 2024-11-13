@@ -6,6 +6,7 @@ export default function MealIdeas({ ingredient }) {
   const [mealList, setMealList] = useState([]);
   const [selectedLi, setSelectedLi] = useState("");
   const fetchMealIdeas = async (ingredient) => {
+    if (ingredient === "") return;
     const response = await fetch(
       `https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`
     );
