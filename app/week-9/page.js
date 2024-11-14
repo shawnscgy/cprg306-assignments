@@ -28,19 +28,27 @@ const MyComponent = () => {
   };
 
   return (
-    <div>
-      {user ? (
-        <div>
-          <p>
-            Welcome, {user.displayName} ({user.email})
-          </p>
-          <button onClick={handleSignOut}>Sign Out</button>
-        </div>
-      ) : (
-        <button onClick={handleSignIn}>Sign In with GitHub</button>
-      )}
-      {error && <p>{error}</p>}
-    </div>
+    <main className="m-2 p-2">
+      <h1 className="text-3xl font-bold mb-4 text-white">Shopping List</h1>
+      <div>
+        {user ? (
+          <div>
+            <p>
+              Welcome, {user.displayName} ({user.email})
+            </p>
+            <p>
+              <a href="/week-9/shopping-list" className="hover:underline">
+                Visit Shopping List
+              </a>
+            </p>
+            <button onClick={handleSignOut}>Sign Out</button>
+          </div>
+        ) : (
+          <button onClick={handleSignIn}>Sign In with GitHub</button>
+        )}
+        {error && <p>{error}</p>}
+      </div>
+    </main>
   );
 };
 
