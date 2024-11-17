@@ -29,7 +29,7 @@ export default function ItemList({ onItemSelect }) {
       setHorribleState(false);
     }
     setItemsState(newList); // this can make sure horribleState can update
-  }, [itemsState]);
+  }, []);
 
   // handle sortBy to determine compare method
   const handleSortByName = () => {
