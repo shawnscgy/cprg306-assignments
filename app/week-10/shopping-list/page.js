@@ -6,6 +6,8 @@ import { addItem } from "../_services/shopping-list-service";
 import { useUserAuth } from "../_utils/auth-context";
 import { useState } from "react";
 export default function Page() {
+  const [selectedItemName, setSelectedItemName] = useState("");
+  const { user, gitHubSignIn } = useUserAuth();
   const handleSignIn = async () => {
     try {
       await gitHubSignIn();
@@ -14,11 +16,10 @@ export default function Page() {
       console.error(err);
     }
   };
-  const { user, gitHubSignIn } = useUserAuth();
-  if (!user)
-    return () => <button onClick={handleSignIn}>Sign In with GitHub</button>;
+  if (!user) return <button onClick={handleSignIn}>Sign In with GitHub</button>;
+
   const userId = user.uid;
-  const [selectedItemName, setSelectedItemName] = useState("");
+
   const handleAddItem = (item) => {
     addItem(userId, item);
   };
