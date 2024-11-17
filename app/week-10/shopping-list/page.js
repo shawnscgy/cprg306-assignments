@@ -20,8 +20,8 @@ export default function Page() {
 
   const userId = user.uid;
 
-  const handleAddItem = (item) => {
-    addItem(userId, item);
+  const handleAddItem = async (item) => {
+    await addItem(userId, item);
   };
   const handleItemSelect = (name) => {
     let newName = name.replace(

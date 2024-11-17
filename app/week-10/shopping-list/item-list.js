@@ -121,6 +121,7 @@ export default function ItemList({ onItemSelect }) {
                   .map((item) => (
                     <Item
                       key={item.id}
+                      id={item.id}
                       name={item.name}
                       quantity={item.quantity}
                       category={item.category}
@@ -136,6 +137,7 @@ export default function ItemList({ onItemSelect }) {
           {itemsState.map((item) => (
             <Item
               key={item.id}
+              id={item.id}
               name={item.name}
               quantity={item.quantity}
               category={item.category}
