@@ -20,7 +20,10 @@ export default function Item(props) {
           Buy {props.quantity} in {props.category}
         </p>
       </div>
-      <button className="text-sm hover:underline" onClick={handleDeleteItem}>
+      <button
+        className="text-sm hover:underline mt-6"
+        onClick={handleDeleteItem}
+      >
         Delete
       </button>
     </li>

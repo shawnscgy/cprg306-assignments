@@ -8,27 +8,20 @@ export default function ItemList({ onItemSelect }) {
   const [sortBy, setSortBy] = useState("");
   const [horribleState, setHorribleState] = useState(false);
   const [itemsState, setItemsState] = useState([]);
+  // at the beginning, it's empty, but after loadItems,
+  // it will be set to a value, so i have to use useState
+  // if use a variable, when the component re-renders, it will be reset to empty
+  const [initialItems, setInitialItems] = useState([]);
   const { user } = useUserAuth();
   const userId = user.uid;
   async function loadItems() {
-    const newItemsState = await getItems(userId);
-    setItemsState(newItemsState);
+    const newInitialItems = await getItems(userId);
+    setItemsState(newInitialItems);
+    setInitialItems(newInitialItems);
   }
-  // add useEffect, cause if not, the added items will not show up
+  // add useEffect to load items
   useEffect(() => {
     loadItems(userId);
-    const newList = [...itemsState];
-    // hold the state of the items sorted by name
-    if (sortBy === "name") {
-      newList.sort((a, b) => a.name.localeCompare(b.name));
-      setHorribleState(false);
-    }
-    // hold the state of the items sorted by category
-    if (sortBy === "category") {
-      newList.sort((a, b) => a.category.localeCompare(b.category));
-      setHorribleState(false);
-    }
-    setItemsState(newList); // this can make sure horribleState can update
   }, []);
 
   // handle sortBy to determine compare method
@@ -36,7 +29,7 @@ export default function ItemList({ onItemSelect }) {
     // canceled and reset to initial state
     if (sortBy === "name") {
       setSortBy("");
-      setItemsState([...itemsState]);
+      setItemsState([...initialItems]);
       return;
     }
     setSortBy("name");
@@ -49,7 +42,7 @@ export default function ItemList({ onItemSelect }) {
     // canceled and reset to initial state
     if (sortBy === "category") {
       setSortBy("");
-      setItemsState([...itemsState]);
+      setItemsState([...initialItems]);
       return;
     }
     setSortBy("category");
@@ -72,7 +65,7 @@ export default function ItemList({ onItemSelect }) {
     // canceled and reset to initial state
     if (horribleState) {
       setHorribleState(false);
-      setItemsState([...itemsState]);
+      setItemsState([...initialItems]);
       return;
     }
     setHorribleState(true);
