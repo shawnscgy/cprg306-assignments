@@ -33,6 +33,7 @@ export async function addItem(userId, item) {
 }
 export async function deleteItem(userId, itemId) {
   try {
+    console.log(userId, itemId);
     const itemDocRef = doc(db, "users", userId, "items", itemId);
     console.log("itemDocRef: ", await getDoc(itemDocRef));
     await deleteDoc(itemDocRef);
