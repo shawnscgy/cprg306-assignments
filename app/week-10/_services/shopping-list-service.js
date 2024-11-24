@@ -14,7 +14,7 @@ export const getItems = async (userId) => {
     const itemsCollectionRef = collection(db, "users", userId, "items");
     const itemsSnapshot = await getDocs(itemsCollectionRef);
     const itemsList = itemsSnapshot.docs.map((doc) => ({
-      id: userId,
+      id: doc.id,
       ...doc.data(),
     }));
     return itemsList;

@@ -5,24 +5,12 @@ export default function NewItem({ onAddItem }) {
   const [quantity, setQuantity] = useState(1);
   const [name, setName] = useState("");
   const [category, setCategory] = useState("produce");
-  function generateRandomString() {
-    const length = 16;
-    const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let result = "";
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(
-        Math.floor(Math.random() * characters.length)
-      );
-    }
-    return result;
-  }
+
   const increment = () => setQuantity(quantity + 1);
   const decrement = () => setQuantity(quantity - 1);
   const handleSubmit = (e) => {
     e.preventDefault();
     const item = {
-      id: generateRandomString(),
       name,
       quantity,
       category,
