@@ -48,7 +48,7 @@ export default function Page() {
     }
   };
   return (
-    <main className="bg-slate-950 m-2 p-2">
+    <main className="bg-slate-950 m-2 p-2 min-h-full">
       <h1 className="text-3xl font-bold mb-4 text-white">Shopping List</h1>
       <div className="flex">
         <div className="max-w-md m-2">
